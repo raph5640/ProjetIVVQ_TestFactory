@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "32837a68-d77c-4eea-a46f-d3d0a265f56e",
+		"name": "Squash_Exercice_incomplete",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30365647",
+		"_collection_link": "https://projetivvqmarioraphaelanthony5640.postman.co/workspace/Projet-IVVQ~e10d11c9-0256-4cb4-8bcb-dd59e98908e2/collection/30365713-32837a68-d77c-4eea-a46f-d3d0a265f56e?action=share&source=collection_link&creator=30365647"
+	},
+	"item": [
+		{
+			"name": "Create requirement folder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"//Test vérification du type de réponse\r",
+							"pm.test(\"Response should be of type JSON\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment')\r",
+							"pm.variables.set('currentDate', moment().format((\"DD/MM/YYYY\")))\r",
+							"pm.variables.set('currentHour', moment().format((\"HH:mm:ssss a\")));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"_type\" : \"requirement-folder\",\r\n  \"name\" : \"Postman a créé ce dossier le {{currentDate}}-{{currentHour}}\",\r\n  \"parent\" : {\r\n    \"_type\" : \"requirement-folder\",\r\n    \"id\" : 254\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/squash/api/rest/latest/requirement-folders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"squash",
+						"api",
+						"rest",
+						"latest",
+						"requirement-folders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create test case",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment')",
+							"pm.variables.set('currentDate', moment().format((\"DD/MM/YYYY\")))",
+							"pm.variables.set('currentHour', moment().format((\"HH:mm:ssss a\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test vérification du code status",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"//Test vérification du type de réponse",
+							"pm.test(\"Response should be of type JSON\", function () {",
+							"    pm.response.to.be.json; ",
+							"});",
+							"",
+							"//Test vérification d'un attribut '_type' et sa valeur",
+							"pm.test(\"Response has _type attribute with value 'test-case'\", function () {",
+							"    var jsonResponse = pm.response.json();",
+							"    pm.expect(jsonResponse).to.have.property('_type', 'test-case');",
+							"});",
+							"",
+							"//Test Vérification de la présence d'un attribut parent et la valeur de son id",
+							"pm.test(\"Parent attribute has id of 14\", function () {",
+							"    var jsonResponse = pm.response.json();",
+							"    pm.expect(jsonResponse.parent).to.have.property('id', 14);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"_type\" : \"test-case\",\n  \"name\" : \"Test {{currentDate}}-{{currentHour}}\",\n  \"parent\" : {\n    \"_type\" : \"project\",\n    \"id\" : 14\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/squash/api/rest/latest/test-cases",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"squash",
+						"api",
+						"rest",
+						"latest",
+						"test-cases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create project",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test vérification du code status",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"//Test vérification du type de réponse",
+							"pm.test(\"Response should be of type JSON\", function () {",
+							"    pm.response.to.be.json; ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"_type\" : \"project\",\n  \"name\" : \"New project\",\n  \"label\" : \"no price tag\",\n  \"description\" : \"<p>do something meaningful</p>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/squash/api/rest/latest/projects",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"squash",
+						"api",
+						"rest",
+						"latest",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
