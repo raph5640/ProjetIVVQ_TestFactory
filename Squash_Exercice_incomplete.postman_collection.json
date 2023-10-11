@@ -180,7 +180,9 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
+							"var moment = require('moment')",
+							"pm.variables.set('currentDate', moment().format((\"DD/MM/YYYY\")))",
+							"pm.variables.set('currentHour', moment().format((\"HH:mm:ssss a\")));"
 						],
 						"type": "text/javascript"
 					}
@@ -223,7 +225,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"_type\" : \"project\",\n  \"name\" : \"New project\",\n  \"label\" : \"no price tag\",\n  \"description\" : \"<p>do something meaningful</p>\"\n}",
+					"raw": "{\n  \"_type\" : \"project\",\n  \"name\" : \"New project {{currentDate}}-{{currentHour}}\",\n  \"label\" : \"no price tag\",\n  \"description\" : \"<p>do something meaningful</p>\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
