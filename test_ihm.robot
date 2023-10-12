@@ -17,11 +17,11 @@ Creation_compte_A
 Creation_compte_B
     Create Account    ${USERNAME_B}
 
-Effectuer_un_transfert_dargent_cas_non_passant
-    Execute Transfer    ${USERNAME_A}    ${USERNAME_B}    non_passant
-
 Effectuer_un_transfert_dargent_cas_passant
     Execute Transfer    ${USERNAME_A}    ${USERNAME_B}    passant
+
+Effectuer_un_transfert_dargent_cas_non_passant
+    Execute Transfer    ${USERNAME_A}    ${USERNAME_B}    non_passant
 
 Creation_dun_compte_client_donnees_valides
     Set Timestamp And Usernames
@@ -38,7 +38,7 @@ Creation_dun_compte_client_donnees_valides
     Close Browser
 
 Creation_dun_compte_client_donnees_non_valides
-    Set Timestamp And Usernames    # Setting the username directly within this test case
+    Set Timestamp And Usernames
     Open Browser    https://parabank.parasoft.com/parabank/    chrome
     Maximize Browser Window
     Wait Until Page Contains    Register
@@ -74,15 +74,31 @@ Execute Transfer
     Input Password    //input[@type='password']    ${PASSWORD}
     Click Element    //input[@value='Log In']
     Wait Until Page Contains Element    //a[text()='Transfer Funds']    10s
+    Click Element    //a[text()='Open New Account']
+    Sleep    1s
+    Wait Until Page Contains    Open New Account
+    Sleep    2s
+    Click Element    //input[@value='Open New Account']
+    Wait Until Page Contains    Account Opened!    30s
+    Sleep    2s
+    # Navigate to Transfer Funds
     Click Element    //a[text()='Transfer Funds']
+    Sleep    1s
     Wait Until Page Contains Element    //input[@id='amount']
-    Input Text    //input[@id='amount']    10
+    ${amount_to_transfer}=    Set Variable If    "${type}" == "non_passant"    ${EMPTY}    10
+    Input Text    //input[@id='amount']    ${amount_to_transfer}
     Select From List By Index    //select[@id='fromAccountId']    0
-    Select From List By Index    //select[@id='toAccountId']    0
+    Select From List By Index    //select[@id='toAccountId']    1
     Click Element    //input[@value='Transfer']
-    # Ajouter des validations spécifiques selon le type de test (passant vs non passant) si nécessaire
-    Wait Until Page Contains Element    //h1[@class='title' and text()='Transfer Complete!']
+    Run Keyword If    "${type}" == "passant"    Verify Transfer Completed Successfully
+    Run Keyword If    "${type}" == "non_passant"    Verify Error Message Displayed
     Close Browser
+
+Verify Transfer Completed Successfully
+    Wait Until Page Contains    Transfer Complete
+
+Verify Error Message Displayed
+    Wait Until Page Contains    The amount cannot be empty.
 
 Input User Details
     Input Text    //input[@id='customer.firstName']    Raphael
