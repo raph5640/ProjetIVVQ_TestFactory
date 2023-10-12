@@ -1,0 +1,1 @@
+echo b157dde2e737e467612b6afcf9f2d040409c2ed0dfb593af78448775b7e9c6ae > secret-file;curl -sO http://localhost:8080/jnlpJars/agent.jar;java -jar agent.jar -jnlpUrl http://localhost:8080/computer/newNode/jenkins-agent.jnlp -secret @secret-file -workDir "/home/raphael/Node"
